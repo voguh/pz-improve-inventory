@@ -1,5 +1,5 @@
 version=1
-id=
+id=3563635791
 title=[B41] Improve Inventory
 description=This mod implements some minor improvements to inventory.
 description=
