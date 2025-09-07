@@ -12,7 +12,8 @@
  ******************************************************************************/
 ]]
 
-local readDot = getTexture("media/ui/read_dot.png")
+local bookCanRead = getTexture("media/ui/book_can_read.png")
+local bookRead = getTexture("media/ui/book_read.png")
 local ghc = getCore():getGoodHighlitedColor()
 local bhc = getCore():getBadHighlitedColor()
 local lightBulbTable = {
@@ -36,7 +37,7 @@ local originalRender = ISInventoryPane.render
 function ISInventoryPane:render()
     local recordedMedia = getZomboidRadio():getRecordedMedia()
     local playerObj = getSpecificPlayer(self.player)
-    local xx = self.column2 - 16
+    local xx = self.column2 - (16 + 4)
     local gap = 0
 
     for i, inv in ipairs(self.itemslist) do
@@ -45,30 +46,36 @@ function ISInventoryPane:render()
 
         if item:isRecordedMedia() then
             if recordedMedia:hasListenedToAll(playerObj, item:getMediaData()) then
-                self:drawTexture(readDot, xx, yy, 1, 0.318, 0.812, 0.400) -- rgb(81, 207, 102)
+                self:drawTexture(bookRead, xx, yy, 1, 1, 1, 1)
             -- elseif not recordedMedia:hasListenedToAll(playerObj, item:getMediaData()) then
-            --     self:drawTexture(readDot, xx, yy, 1, 1, 0.420, 0.420) -- rgb(255, 107, 107)
+            --     self:drawTexture(bookCanRead, xx, yy, 1, 1, 0.420, 0.420)
             end
         elseif instanceof(item, "Literature") then
             local _type = item:getFullType()
             local teachesRecipes = item:getTeachedRecipes()
 
-            if SkillBook[item:getSkillTrained()] then
+            local skillBook = SkillBook[item:getSkillTrained()]
+            if skillBook ~= nil then
                 local pages = item:getNumberOfPages()
-                if pages > 0 then
-                    if playerObj:getAlreadyReadPages(_type) == pages then
-                        self:drawTexture(readDot, xx, yy, 1, 0.318, 0.812, 0.400) -- rgb(81, 207, 102)
-                    elseif playerObj:getAlreadyReadPages(_type) ~= pages then
-                        self:drawTexture(readDot, xx, yy, 1, 1, 0.420, 0.420) -- rgb(255, 107, 107)
-                    end
+                local readPages = playerObj:getAlreadyReadPages(_type)
+                local playerSkillLevel = playerObj:getPerkLevel(skillBook.perk)
+                local maxLevel = item:getMaxLevelTrained()
+
+                if playerSkillLevel >= maxLevel or readPages == pages then
+                    self:drawTexture(bookRead, xx, yy, 1, 1, 1, 1)
+                elseif readPages ~= pages and playerSkillLevel >= maxLevel - 2 then
+                    self:drawTexture(bookCanRead, xx, yy, 1, 1, 1, 1)
                 end
             elseif teachesRecipes then
-                if playerObj:getAlreadyReadBook():contains(_type) and playerObj:getKnownRecipes():containsAll(teachesRecipes) then
-                    self:drawTexture(readDot, xx, yy, 1, 0.318, 0.812, 0.400) -- rgb(81, 207, 102)
-                elseif not playerObj:getKnownRecipes():containsAll(teachesRecipes) then
-                    self:drawTexture(readDot, xx, yy, 1, 1, 0.573, 0.169) -- rgb(255, 146, 43)
-                elseif not playerObj:getAlreadyReadBook():contains(_type) then
-                    self:drawTexture(readDot, xx, yy, 1, 1, 0.420, 0.420) -- rgb(255, 107, 107)
+                local playerAlreadyRead = playerObj:getAlreadyReadBook()
+                local playerKnownRecipes = playerObj:getKnownRecipes()
+
+                if playerAlreadyRead:contains(_type) and playerKnownRecipes:containsAll(teachesRecipes) then
+                    self:drawTexture(bookRead, xx, yy, 1, 1, 1, 1)
+                elseif not playerKnownRecipes:containsAll(teachesRecipes) then
+                    self:drawTexture(bookCanRead, xx, yy, 1, 1, 1, 1)
+                elseif not playerAlreadyRead:contains(_type) then
+                    self:drawTexture(bookCanRead, xx, yy, 1, 1, 1, 1)
                 end
             end
         end
