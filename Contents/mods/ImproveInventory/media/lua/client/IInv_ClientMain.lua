@@ -95,7 +95,7 @@ function ISInventoryPane:drawItemDetails(item, y, xOffset, yOffset, red)
     end
 
     local hdrHgt = self.headerHgt
-    local top = hdrHgt + y * self.itemHgt + xOffset
+    local top = hdrHgt + y * self.itemHgt + yOffset
     local fgBar = {r=ghc:getR(), g=ghc:getG(), b=ghc:getB(), a=1}
     local fgText = {r=0.6, g=0.8, b=0.5, a=0.6}
 
