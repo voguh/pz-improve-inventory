@@ -12,5 +12,13 @@ description=    [*]Show cooking/burning percentage
 description=    [*]Show freezing percentage
 description=    [*]Show nutrition percentage
 description=[/list]
+description=
+description=
+description=
+description=[quote]
+description=This item is not authorized for posting on Steam, except under the Steam account named Voguh.
+description=[/quote]
+description=
+description=[url=https://github.com/voguh/pz-improve-inventory][img]https://raw.githubusercontent.com/voguh/pz-improve-inventory/refs/heads/main/docs/workshop_footer.png[/img][/url]
 tags=Build 41;Items
-visibility=private
+visibility=public
