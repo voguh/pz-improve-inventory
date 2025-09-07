@@ -104,13 +104,17 @@ function ISInventoryPane:drawItemDetails(item, y, xOffset, yOffset, red)
     end
 
     if instanceof(item, "HandWeapon") or lightBulbTable[item:getFullType()] then
-        local progress = item:getCondition() / item:getConditionMax()
-        local text = getText("IGUI_invpanel_Condition") .. ": " .. round(progress * 100) .. "%"
+        local cond = item:getCondition()
+        local condMax = item:getConditionMax()
+        local progress = cond / condMax
+        local text = string.format("%d / %d (%d%s)", cond, condMax, progress * 100, "%")
         return self:drawTextAndProgressBar(text, progress, xOffset, top, fgText, fgBar)
     elseif instanceof(item, "Drainable") then
+        local uses = item:getDrainableUsesInt()
+        local delta = math.ceil(1 / item:getUseDelta())
         local progress = item:getUsedDelta()
-        local text = getText("IGUI_invpanel_Remaining") .. ": " .. round(progress * 100) .. "%"
-        return self:drawTextAndProgressBar(text, item:getUsedDelta(), xOffset, top, fgText, fgBar)
+        local text = string.format("%d / %d (%d%s)", uses, delta, progress * 100, "%")
+        return self:drawTextAndProgressBar(text, progress, xOffset, top, fgText, fgBar)
     elseif item:getMeltingTime() > 0 then
         local progress = item:getMeltingTime() / 100
         local text = getText("IGUI_invpanel_Melting") .. ": " .. round(progress * 100) .. "%"
