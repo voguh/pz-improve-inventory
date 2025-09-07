@@ -1,0 +1,16 @@
+version=1
+id=
+title=[B41] Improve Inventory
+description=This mod implements some minor improvements to inventory.
+description=
+description=[list]
+description=    [*]Show books/media read indicator
+description=    [*]Show weapon condition percentage
+description=    [*]Show drainable remaining percentage
+description=    [*]Show melting percentage
+description=    [*]Show cooking/burning percentage
+description=    [*]Show freezing percentage
+description=    [*]Show nutrition percentage
+description=[/list]
+tags=Build 41;Items
+visibility=private
