@@ -103,7 +103,7 @@ function ISInventoryPane:drawItemDetails(item, y, xOffset, yOffset, red)
         fgText = {r=0.0, g=0.0, b=0.5, a=0.7}
     end
 
-    if instanceof(item, "HandWeapon") or lightBulbTable[item:getFullType()] then
+    if instanceof(item, "HandWeapon") or lightBulbTable[item:getFullType()] or item:getMechanicType() ~= 0 then
         local cond = item:getCondition()
         local condMax = item:getConditionMax()
         local progress = cond / condMax
